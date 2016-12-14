@@ -128,7 +128,7 @@ defmodule Stripe.Accounts do
 
   """
   def all( accum \\ [], starting_after \\ "") do
-    all Stripe.config_or_env_key, accum, starting_after 
+    all Stripe.config_or_env_key, accum, starting_after
   end
 
   @doc """
@@ -163,6 +163,20 @@ defmodule Stripe.Accounts do
       {:error, err} -> raise err
     end
   end
+
+      @doc """
+    Updates an account with the given parameters - all of which are optional.
+    Using a given stripe key to apply against the account associated.
+
+    ## Example
+    ```
+    {:ok, res} = Stripe.Accounts.update(account_id, new_fields, key)
+    ```
+    """
+    def update(account_id, params, key) do
+      Stripe.make_request_with_key(:post, "#{@endpoint}/#{account_id}", key, params)
+      |> Stripe.Util.handle_stripe_response
+    end
 
   @doc """
   Delete an account.
