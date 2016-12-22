@@ -41,12 +41,12 @@ defmodule Stripe.Charges do
       {:ok, charge} = Stripe.Charges.create(1000, params)
 
   """
-  def create(amount, params) do
-    create amount, params, Stripe.config_or_env_key
-  end
-
   def create(params) do
     create params, Stripe.config_or_env_key
+  end
+  
+  def create(amount, params) do
+    create amount, params, Stripe.config_or_env_key
   end
 
   @doc """
