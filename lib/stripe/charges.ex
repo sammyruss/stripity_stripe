@@ -45,6 +45,10 @@ defmodule Stripe.Charges do
     create amount, params, Stripe.config_or_env_key
   end
 
+  def create(params) do
+    create params, Stripe.config_or_env_key
+  end
+
   @doc """
   Create a charge. Accepts Stripe API key.
 
@@ -64,6 +68,11 @@ defmodule Stripe.Charges do
     #drop in the amount
     params = Keyword.put_new params, :amount, amount
 
+    Stripe.make_request_with_key(:post, @endpoint, key, params)
+    |> Stripe.Util.handle_stripe_response
+  end
+
+  def create(params, key) do
     Stripe.make_request_with_key(:post, @endpoint, key, params)
     |> Stripe.Util.handle_stripe_response
   end
@@ -299,7 +308,7 @@ defmodule Stripe.Charges do
   Refund a charge. Accepts Stripe API key.
 
   Refunds a charge completely.
-  
+
   Note: use `refund_partial` if you just want to perform a partial refund.
 
   Returns a `{:ok, charge}` tuple.
